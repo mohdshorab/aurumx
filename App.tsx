@@ -1,10 +1,10 @@
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Dashboard from './src/features/dashboard';
+import RootNavigation from './src/navigation/RootNavigation';
 
 const App: React.FC = () => {
   return (
     <SafeAreaProvider>
-      <Dashboard />
+      <RootNavigation />
     </SafeAreaProvider>
   );
 };
