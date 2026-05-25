@@ -4,22 +4,25 @@ import RootNavigation from './src/navigation/RootNavigation';
 import { Provider } from 'react-redux';
 import store from './src/store';
 import BootSplash from 'react-native-bootsplash';
+import NetworkProvider from './src/hooks/useNetInfo';
 
 const App: React.FC = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
       BootSplash.hide({ fade: true });
-    }, 5000);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <SafeAreaProvider>
-      <Provider store={store}>
-        <RootNavigation />
-      </Provider>
+      <NetworkProvider>
+        <Provider store={store}>
+          <RootNavigation />
+        </Provider>
+      </NetworkProvider>
     </SafeAreaProvider>
   );
 };
