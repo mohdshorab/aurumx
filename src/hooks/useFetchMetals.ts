@@ -1,24 +1,25 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { RootState } from '../store';
 import { useAppDispatch, useAppSelector } from './useRedux';
-import { getMetals } from '../store/slice/metals.slice';
+import { getMetalPrice, MetalType } from '../store/slice/metals.slice';
 
-const useFetchMetals = () => {
-  const { data, status, error } = useAppSelector(
-    (state: RootState) => state.metals,
-  );
+const useFetchMetal = (metal: MetalType) => {
   const dispatch = useAppDispatch();
+  const metalState = useAppSelector((state: RootState) => state.metals[metal]);
+
+  const refetch = useCallback(() => {
+    return dispatch(getMetalPrice(metal));
+  }, [dispatch, metal]);
 
   useEffect(() => {
-    const promise = dispatch(getMetals());
+    const promise = dispatch(getMetalPrice(metal));
     return () => promise.abort();
-  }, [dispatch]);
+  }, [dispatch, metal]);
 
   return {
-    metals: data ?? null,
-    status,
-    error,
+    ...metalState,
+    refetch,
   };
 };
 
-export default useFetchMetals;
+export default useFetchMetal;
