@@ -2,6 +2,12 @@
 
 AurumX is a premium, high-performance **React Native** application designed to track live spot rates of precious metals (Gold, Silver, Platinum, and Palladium) in Indian Rupees (INR) per Gram. The application is built using modern standards including Redux Toolkit, React Navigation, MMKV for fast local caching, NetInfo for network state synchronization, and strict quota limitation overrides.
 
+## 📸 App Preview
+
+<p align="center">
+  <img src="assets/dashboard.png" width="320" alt="Market Dashboard" />
+</p>
+
 ---
 
 ## 📱 Key Features
@@ -102,10 +108,3 @@ npm run ios
 ```
 
 ---
-
-## 📚 Advanced Architecture Guides
-
-For detailed, step-by-step walkthroughs of AurumX's core systems, refer to:
-* 🗃️ [Redux State Management Guide](file:///Users/mohod.shorab/Development/Assesments/aurumx/docs/redux-setup-guide.md)
-* 📡 [Offline Caching & Network Management Guide](file:///Users/mohod.shorab/Development/Assesments/aurumx/docs/offline-caching-network-guide.md)
-* 🌐 [Server-Side Caching & Proxy Architecture Guide](file:///Users/mohod.shorab/Development/Assesments/aurumx/docs/api-caching-guide.md)

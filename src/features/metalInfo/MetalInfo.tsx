@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -8,6 +8,7 @@ import { getMetalDetails } from '../../store/slice/metals.slice';
 import Header from '../../components/header/Header';
 import AppIcon from '../../components/appIcon/AppIcon';
 import styles from './MetalInfo.styles';
+import { useNetwork } from '../../hooks/useNetInfo';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'metalInfo'>;
 
@@ -41,6 +42,8 @@ const MetalInfo: React.FC<Props> = ({ route, navigation }) => {
     state => state.metals[metal]
   );
   const meta = METAL_META[metal];
+  const netInfo = useNetwork();
+  const isOffline = netInfo?.isConnected === false;
 
   const formatCurrency = (val: number) => {
     return `₹${val.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -56,11 +59,11 @@ const MetalInfo: React.FC<Props> = ({ route, navigation }) => {
     }
   };
 
-  const handleBack = React.useCallback(() => {
+  const handleBack = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
 
-  const handleRefetch = React.useCallback(() => {
+  const handleRefetch = useCallback(() => {
     dispatch(getMetalDetails(metal));
   }, [dispatch, metal]);
 
@@ -69,7 +72,7 @@ const MetalInfo: React.FC<Props> = ({ route, navigation }) => {
     return () => promise.abort();
   }, [dispatch, metal]);
 
-  const showOfflineBanner = detailsError === 'No internet available to fetch fresh';
+  const showOfflineBanner = isOffline;
   const showQuotaBanner = detailsError === 'Your free transactions limit has ended here';
 
   return (

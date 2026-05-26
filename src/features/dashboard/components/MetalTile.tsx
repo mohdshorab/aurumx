@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import useFetchMetal from '../../../hooks/useFetchMetals';
@@ -51,11 +51,11 @@ const MetalTile: React.FC<MetalTileProps> = ({ metal }) => {
     }
   };
 
-  const handlePress = React.useCallback(() => {
+  const handlePress = useCallback(() => {
     navigation.navigate('metalInfo', { metal });
   }, [navigation, metal]);
 
-  const handleRefetch = React.useCallback(() => {
+  const handleRefetch = useCallback(() => {
     refetch();
   }, [refetch]);
 
