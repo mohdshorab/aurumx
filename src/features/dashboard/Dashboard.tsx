@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { getMetalPrice } from '../../store/slice/metals.slice';
 import AppIcon from '../../components/appIcon/AppIcon';
 
-const Dashboard: React.FC<ScreenProps> = ({ navigation: _navigation }) => {
+const Dashboard: React.FC<ScreenProps> = () => {
   const dispatch = useAppDispatch();
   const { gold, silver, platinum, palladium } = useAppSelector(state => state.metals);
 
@@ -19,12 +19,18 @@ const Dashboard: React.FC<ScreenProps> = ({ navigation: _navigation }) => {
     platinum.error === 'No internet available to fetch fresh' ||
     palladium.error === 'No internet available to fetch fresh';
 
-  const handleRefreshAll = () => {
+  const showQuotaBanner = 
+    gold.error === 'Your free transactions limit has ended here' ||
+    silver.error === 'Your free transactions limit has ended here' ||
+    platinum.error === 'Your free transactions limit has ended here' ||
+    palladium.error === 'Your free transactions limit has ended here';
+
+  const handleRefreshAll = React.useCallback(() => {
     dispatch(getMetalPrice('gold'));
     dispatch(getMetalPrice('silver'));
     dispatch(getMetalPrice('platinum'));
     dispatch(getMetalPrice('palladium'));
-  };
+  }, [dispatch]);
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
@@ -37,6 +43,12 @@ const Dashboard: React.FC<ScreenProps> = ({ navigation: _navigation }) => {
         <View style={styles.offlineBanner}>
           <AppIcon name="wifi-outline" size={16} color="#E65100" style={styles.offlineIcon} />
           <Text style={styles.offlineText}>No internet available to fetch fresh</Text>
+        </View>
+      )}
+      {showQuotaBanner && (
+        <View style={styles.offlineBanner}>
+          <AppIcon name="alert-circle-outline" size={16} color="#E65100" style={styles.offlineIcon} />
+          <Text style={styles.offlineText}>Your free transactions limit has ended here. Showing cached data.</Text>
         </View>
       )}
       <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
