@@ -126,10 +126,14 @@ const MetalInfo: React.FC<Props> = ({ route, navigation }) => {
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Market Reference Rates</Text>
               <View style={styles.table}>
-                {details?.previousClose !== undefined && details?.previousClose !== null && (
+                {details?.previousClose !== undefined && details?.previousClose !== null ? (
                   <View style={styles.tableRow}>
                     <Text style={styles.tableLabel}>Previous Close</Text>
                     <Text style={styles.tableValue}>{formatCurrency(details.previousClose)}</Text>
+                  </View>
+                ) : (
+                  <View style={styles.noDataRow}>
+                    <Text style={styles.noDataText}>Details not available</Text>
                   </View>
                 )}
               </View>

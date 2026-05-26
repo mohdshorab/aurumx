@@ -13,13 +13,13 @@ const Dashboard: React.FC<ScreenProps> = () => {
   const dispatch = useAppDispatch();
   const { gold, silver, platinum, palladium } = useAppSelector(state => state.metals);
 
-  const showOfflineBanner = 
+  const showOfflineBanner =
     gold.error === 'No internet available to fetch fresh' ||
     silver.error === 'No internet available to fetch fresh' ||
     platinum.error === 'No internet available to fetch fresh' ||
     palladium.error === 'No internet available to fetch fresh';
 
-  const showQuotaBanner = 
+  const showQuotaBanner =
     gold.error === 'Your free transactions limit has ended here' ||
     silver.error === 'Your free transactions limit has ended here' ||
     platinum.error === 'Your free transactions limit has ended here' ||

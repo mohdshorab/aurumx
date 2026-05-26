@@ -144,6 +144,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
   },
+  noDataRow: {
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noDataText: {
+    fontSize: 13,
+    color: '#78909C',
+    fontWeight: '500',
+    textAlign: 'center',
+  },
 });
 
 export default styles;
