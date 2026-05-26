@@ -8,3 +8,18 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # Add any project specific keep options here:
+
+# Keep react-native-config classes
+-keep class com.lugg.RNCConfig.RNCConfigModule { *; }
+-keep class com.lugg.RNCConfig.** { *; }
+
+# MMKV keep rules
+-keep class com.tencent.mmkv.** { *; }
+-keep class com.facebook.soloader.** { *; }
+
+# React Native / Web/Network warnings bypass
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-dontwarn org.conscrypt.**
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase

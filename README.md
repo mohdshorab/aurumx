@@ -1,97 +1,111 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# AurumX - Gold & Precious Metals Rate Tracker
 
-# Getting Started
+AurumX is a premium, high-performance **React Native** application designed to track live spot rates of precious metals (Gold, Silver, Platinum, and Palladium) in Indian Rupees (INR) per Gram. The application is built using modern standards including Redux Toolkit, React Navigation, MMKV for fast local caching, NetInfo for network state synchronization, and strict quota limitation overrides.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+---
 
-## Step 1: Start Metro
+## 📱 Key Features
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+* **Real Spot Rate Tracking**: Tracks live commodity prices (Gold, Silver, Platinum, Palladium) dynamically updated.
+* **Intelligent Unit Conversion**: Automatically converts the raw Troy Ounces (`toz`) values returned by the API into Grams (`g`) using the standard `31.1034768` conversion factor.
+* **Mathematical Accuracy**: Derives metrics (like Yesterday's Close as `Price - Daily Change`) dynamically before state updates to guarantee data consistency.
+* **Multi-Layered Caching (MMKV)**: Leverages `react-native-mmkv` (C++ JSI) to perform synchronous database hydration at startup.
+* **Offline UX Pattern**: Automatically detects network loss and shows fallback cached price rates with a `"No internet available to fetch fresh"` banner instead of throwing errors.
+* **Quota Exhaustion Handler (Error 1203)**: Seamlessly intercepts account request exhaustion (error `1203`) and presents cached records alongside a **"Your free transactions limit has ended here. Showing cached data."** warning banner, or a dedicated error screen if no cache is present.
+* **Production Obfuscation**: Pre-configured with the **Hermes engine** (bytecode pre-compilation) and **ProGuard** code minification for Android security.
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+---
 
-```sh
-# Using npm
-npm start
+## 🛠️ Tech Stack
 
-# OR using Yarn
-yarn start
+* **Framework**: React Native (with TypeScript)
+* **State Management**: Redux Toolkit (RTK)
+* **Local Storage / Cache**: `react-native-mmkv`
+* **Network Interceptor**: `axios` & `@react-native-community/netinfo`
+* **Navigation**: `@react-navigation/native` (Stack Navigation)
+* **Environment Configuration**: `react-native-config`
+
+---
+
+## 📂 Project Directory Structure
+
+```text
+aurumx/
+├── docs/                             # Advanced Architecture Guides
+│   ├── api-caching-guide.md          # Proxy caching architecture for production scale
+│   ├── offline-caching-network-guide.md # Local caching strategy (MMKV) and NetInfo
+│   └── redux-setup-guide.md          # Global state architecture & actions
+├── src/
+│   ├── constants/
+│   │   └── api/                      # API Endpoints & Error Maps
+│   ├── features/
+│   │   ├── dashboard/                # Main Landing Screen and Tile Components
+│   │   └── metalInfo/                # Spot details and Previous Close information
+│   ├── hooks/                        # Custom React Hooks (Redux typed hooks, fetchers)
+│   ├── navigation/                   # React Navigation Stack Setup
+│   ├── services/
+│   │   └── api/                      # Axios Instance and Interceptors
+│   ├── store/
+│   │   ├── index.ts                  # Centralized Redux Store Configuration
+│   │   └── slice/                    # Redux Slices (metals.slice.ts)
+│   └── types/                        # Shared TypeScript interfaces & types
 ```
 
-## Step 2: Build and run your app
+---
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+## ⚙️ Environment Configuration
 
-### Android
+Create a `.env` file at the root of the project to setup the necessary environment parameters:
 
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+```env
+BASE_URL=https://api.metals.dev/v1
+API_KEY=LPB9GPKPJZIWDQQ25UPJ586Q25UPJ
 ```
 
-### iOS
+---
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+## 🚀 Getting Started
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+### Step 1: Install Dependencies
+
+```sh
+npm install
+```
+
+For iOS devices, also run the CocoaPods dependency updates:
 
 ```sh
 bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
 bundle exec pod install
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+### Step 2: Start Metro Packager
+
+Start the JavaScript bundler for Metro:
 
 ```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+npm start
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### Step 3: Run the Application
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+In a separate terminal window, build and start the application on your target simulator/emulator:
 
-## Step 3: Modify your app
+#### Android
+```sh
+npm run android
+```
 
-Now that you have successfully run the app, let's make changes!
+#### iOS
+```sh
+npm run ios
+```
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+---
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+## 📚 Advanced Architecture Guides
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+For detailed, step-by-step walkthroughs of AurumX's core systems, refer to:
+* 🗃️ [Redux State Management Guide](file:///Users/mohod.shorab/Development/Assesments/aurumx/docs/redux-setup-guide.md)
+* 📡 [Offline Caching & Network Management Guide](file:///Users/mohod.shorab/Development/Assesments/aurumx/docs/offline-caching-network-guide.md)
+* 🌐 [Server-Side Caching & Proxy Architecture Guide](file:///Users/mohod.shorab/Development/Assesments/aurumx/docs/api-caching-guide.md)
