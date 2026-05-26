@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import useFetchMetal from '../../../hooks/useFetchMetals';
 import { MetalType } from '../../../store/slice/metals.slice';
 import AppIcon from '../../../components/appIcon/AppIcon';
+import RootStackParamList from '../../../types/navigation.types';
 
 export interface MetalTileProps {
   metal: MetalType;
@@ -35,6 +37,7 @@ const METAL_CONFIG: Record<
 };
 
 const MetalTile: React.FC<MetalTileProps> = ({ metal }) => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { price, status, timestamp, error, refetch } = useFetchMetal(metal);
   const config = METAL_CONFIG[metal];
 
@@ -48,11 +51,23 @@ const MetalTile: React.FC<MetalTileProps> = ({ metal }) => {
     }
   };
 
+  const handlePress = React.useCallback(() => {
+    navigation.navigate('metalInfo', { metal });
+  }, [navigation, metal]);
+
+  const handleRefetch = React.useCallback(() => {
+    refetch();
+  }, [refetch]);
+
   return (
-    <View style={[styles.card, { borderLeftColor: config.activeColor }]}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={handlePress}
+      style={[styles.card, { borderLeftColor: config.activeColor }]}
+    >
       <View style={styles.cardHeader}>
         <Text style={styles.metalLabel}>{config.label}</Text>
-        <TouchableOpacity onPress={refetch} style={styles.refreshButton} activeOpacity={0.7}>
+        <TouchableOpacity onPress={handleRefetch} style={styles.refreshButton} activeOpacity={0.7}>
           <AppIcon name="refresh-outline" size={18} color="#8E8E93" />
         </TouchableOpacity>
       </View>
@@ -75,7 +90,7 @@ const MetalTile: React.FC<MetalTileProps> = ({ metal }) => {
             <Text style={styles.errorText} numberOfLines={1}>
               {error || 'Failed to update'}
             </Text>
-            <TouchableOpacity onPress={refetch} style={styles.retryButton}>
+            <TouchableOpacity onPress={handleRefetch} style={styles.retryButton}>
               <Text style={styles.retryText}>Retry</Text>
             </TouchableOpacity>
           </View>
@@ -84,15 +99,13 @@ const MetalTile: React.FC<MetalTileProps> = ({ metal }) => {
         )}
       </View>
 
-
-
       <View style={styles.cardFooter}>
         <AppIcon name="time-outline" size={12} color="#8E8E93" style={styles.timeIcon} />
         <Text style={styles.timestampText}>
           {status === 'loading' ? 'Updating...' : `As of ${formatTimestamp(timestamp)}`}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
